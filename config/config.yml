@@ -1,0 +1,5 @@
+postgres:
+  url: postgresql://postgres:postgres@psql:5432/postgres
+
+http:
+  port: 9000
