@@ -2,9 +2,10 @@ package repo
 
 import (
 	"context"
-	"pet-project-1/internal/entity"
-	"pet-project-1/pkg/postgres"
 	"fmt"
+	"pet-project-1/internal/entity"
+	"pet-project-1/internal/usecase"
+	"pet-project-1/pkg/postgres"
 )
 
 type BookRepo struct {
@@ -16,6 +17,9 @@ func NewBookRepo(pg *postgres.Postgres) *BookRepo {
 		pg: pg,
 	}
 }
+
+var _ usecase.BookRepo = (*BookRepo)(nil)
+
 func (b *BookRepo) GetBooks(ctx context.Context) ([]entity.Book, error) {
 	query := `SELECT * from books`
 
