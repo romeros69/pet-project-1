@@ -18,3 +18,7 @@ var _ Book = (*BookUseCase)(nil)
 func (b *BookUseCase) GetBooks(ctx context.Context) ([]entity.Book, error) {
 	return b.repo.GetBooks(ctx)
 }
+
+func (b *BookUseCase) CreateBook(ctx context.Context, book entity.Book) error {
+	return b.repo.CreateBook(ctx, book)
+}

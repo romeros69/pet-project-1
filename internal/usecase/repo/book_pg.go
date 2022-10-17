@@ -43,3 +43,14 @@ func (b *BookRepo) GetBooks(ctx context.Context) ([]entity.Book, error) {
 	}
 	return books, nil
 }
+
+func (b *BookRepo) CreateBook(ctx context.Context, book entity.Book) error {
+	query := `INSERT INTO books (tittle, author) VALUES ($1, $2)`
+
+	rows, err := b.pg.Pool.Query(ctx, query, book.Tittle, book.Author)
+	if err != nil {
+		return fmt.Errorf("cannot execute query: %w", err)
+	}
+	defer rows.Close()
+	return nil
+}

@@ -1,7 +1,9 @@
 package entity
 
+import "github.com/gofrs/uuid"
+
 type Book struct {
-	ID     int64  `json:"id"`
+	ID     uuid.UUID  `json:"id"`
 	Tittle string `json:"tittle"`
 	Author string `json:"author"`
 }

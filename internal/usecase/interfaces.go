@@ -7,8 +7,10 @@ import (
 
 type Book interface {
 	GetBooks(context.Context) ([]entity.Book, error)
+	CreateBook(context.Context, entity.Book) error
 }
 
 type BookRepo interface {
 	GetBooks(context.Context) ([]entity.Book, error)
+	CreateBook(context.Context, entity.Book) error
 }
