@@ -7,10 +7,10 @@ services:
     volumes:
       - ./migrations/migration.sql:/docker-entrypoint-initdb.d/migration.sql:ro
     ports:
-      - "5432:5432"
+      - "${db_port}:${db_port}"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=${db_login}
+      - POSTGRES_PASSWORD=${db_password}
       - POSTGRES_DB=books
 
   app:
