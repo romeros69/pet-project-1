@@ -21,7 +21,7 @@ func NewBookRepo(pg *postgres.Postgres) *BookRepo {
 var _ usecase.BookRepo = (*BookRepo)(nil)
 
 func (b *BookRepo) GetBooks(ctx context.Context) ([]entity.Book, error) {
-	query := `SELECT * from books`
+	query := `SELECT * FROM books`
 
 	rows, err := b.pg.Pool.Query(ctx, query)
 	if err != nil {

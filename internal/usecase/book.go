@@ -5,16 +5,16 @@ import (
 	"pet-project-1/internal/entity"
 )
 
-type BookService struct {
+type BookUseCase struct {
 	repo BookRepo
 }
 
-func newBookService(r BookRepo) *BookService {
-	return &BookService{repo: r}
+func NewBookUseCase(r BookRepo) *BookUseCase {
+	return &BookUseCase{repo: r}
 }
 
-var _ Book = (*BookService)(nil)
+var _ Book = (*BookUseCase)(nil)
 
-func (b *BookService) GetBooks(ctx context.Context) ([]entity.Book, error) {
+func (b *BookUseCase) GetBooks(ctx context.Context) ([]entity.Book, error) {
 	return b.repo.GetBooks(ctx)
 }
