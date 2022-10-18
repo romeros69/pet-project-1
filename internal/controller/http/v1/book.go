@@ -20,16 +20,18 @@ func newBookRoutes(handler *gin.RouterGroup, bk usecase.Book) {
 
 }
 
-type bookResponse struct {
-	Books []entity.Book `json:"books"`
-}
-
 func (br *bookRoutes) getBooks(c *gin.Context) {
 	listBooks, err := br.b.GetBooks(c.Request.Context())
 	if err != nil {
 		errorResponse(c, http.StatusInternalServerError, err.Error())
 	}
-	c.JSON(http.StatusOK, bookResponse{listBooks})
+	var req []entity.Book
+	if listBooks != nil {
+		req = listBooks
+	} else {
+		req = make([]entity.Book, 0)
+	}
+	c.JSON(http.StatusOK, req)
 }
 
 type bookRequest struct {
