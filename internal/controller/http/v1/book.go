@@ -15,7 +15,7 @@ type bookRoutes struct {
 func newBookRoutes(handler *gin.RouterGroup, bk usecase.Book) {
 	br := &bookRoutes{b: bk}
 
-	handler.GET("/books", br.getBooks)
+	handler.GET("/book", br.getBooks)
 	handler.POST("/book", br.createBook)
 
 }
