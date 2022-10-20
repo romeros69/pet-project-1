@@ -8,9 +8,11 @@ import (
 type Book interface {
 	GetBooks(context.Context) ([]entity.Book, error)
 	CreateBook(context.Context, entity.Book) error
+	DeleteBook(context.Context, string) error
 }
 
 type BookRepo interface {
 	GetBooks(context.Context) ([]entity.Book, error)
 	CreateBook(context.Context, entity.Book) error
+	DeleteBook(context.Context, string) error
 }

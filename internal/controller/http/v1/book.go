@@ -17,6 +17,7 @@ func newBookRoutes(handler *gin.RouterGroup, bk usecase.Book) {
 
 	handler.GET("/book", br.getBooks)
 	handler.POST("/book", br.createBook)
+	handler.DELETE("/book/:id", br.deleteBook)
 
 }
 
@@ -52,5 +53,18 @@ func (br *bookRoutes) createBook(c *gin.Context) {
 		errorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, nil)
+	c.JSON(http.StatusCreated, nil)
+}
+
+func (br *bookRoutes) deleteBook(c *gin.Context) {
+	ID := c.Param("id")
+	if ID == "" {
+		errorResponse(c, http.StatusBadRequest, "Отсутствует параметр id")
+	}
+	err := br.b.DeleteBook(c.Request.Context(), ID)
+	if err != nil {
+		errorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusNoContent, nil)
 }

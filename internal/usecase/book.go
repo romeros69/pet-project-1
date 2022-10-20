@@ -22,3 +22,7 @@ func (b *BookUseCase) GetBooks(ctx context.Context) ([]entity.Book, error) {
 func (b *BookUseCase) CreateBook(ctx context.Context, book entity.Book) error {
 	return b.repo.CreateBook(ctx, book)
 }
+
+func (b *BookUseCase) DeleteBook(ctx context.Context, ID string) error {
+	return b.repo.DeleteBook(ctx, ID)
+}
