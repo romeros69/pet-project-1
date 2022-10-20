@@ -58,9 +58,22 @@ func (b *BookRepo) CreateBook(ctx context.Context, book entity.Book) error {
 }
 
 func (b *BookRepo) DeleteBook(ctx context.Context, ID string) error {
-	query := `DELETE FROM book b WHERE b.id = $1`
+	query := `DELETE FROM book WHERE id = $1`
 
 	rows, err := b.pg.Pool.Query(ctx, query, ID)
+
+	if err != nil {
+		return fmt.Errorf("cannot execute query: %w", err)
+	}
+	defer rows.Close()
+
+	return nil
+}
+
+func (b *BookRepo) UpdateBook(ctx context.Context, book entity.Book) error {
+	query := `UPDATE book SET tittle=$1, author=$2 WHERE id=$3`
+
+	rows, err := b.pg.Pool.Query(ctx, query, book.Tittle, book.Author, book.ID)
 
 	if err != nil {
 		return fmt.Errorf("cannot execute query: %w", err)

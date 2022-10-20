@@ -6,6 +6,7 @@ import (
 	"pet-project-1/internal/usecase"
 
 	"github.com/gin-gonic/gin"
+	"github.com/gofrs/uuid"
 )
 
 type bookRoutes struct {
@@ -18,6 +19,7 @@ func newBookRoutes(handler *gin.RouterGroup, bk usecase.Book) {
 	handler.GET("/book", br.getBooks)
 	handler.POST("/book", br.createBook)
 	handler.DELETE("/book/:id", br.deleteBook)
+	handler.PUT("/book/:id", br.updateBook)
 
 }
 
@@ -62,6 +64,30 @@ func (br *bookRoutes) deleteBook(c *gin.Context) {
 		errorResponse(c, http.StatusBadRequest, "Отсутствует параметр id")
 	}
 	err := br.b.DeleteBook(c.Request.Context(), ID)
+	if err != nil {
+		errorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+	c.JSON(http.StatusNoContent, nil)
+}
+
+func (br *bookRoutes) updateBook(c *gin.Context) {
+	bookID , err := uuid.FromString(c.Param("id"))
+	if err != nil {
+		errorResponse(c, http.StatusBadRequest, err.Error())
+	}
+
+	req := new(bookRequest)
+	if err := c.ShouldBindJSON(req); err != nil {
+		errorResponse(c, http.StatusBadRequest, err.Error())
+	}
+
+	err = br.b.UpdateBook(c.Request.Context(), entity.Book{
+		ID: bookID,
+		Tittle: req.Tittle,
+		Author: req.Author,
+	})
+
 	if err != nil {
 		errorResponse(c, http.StatusInternalServerError, err.Error())
 		return
