@@ -55,6 +55,8 @@ func (br *bookRoutes) createBook(c *gin.Context) {
 		errorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
+	// TODO Нужно получать UUID вновь созданного обекта и возвращать его
+	c.Header("k1", "fd")
 	c.JSON(http.StatusCreated, nil)
 }
 
@@ -72,7 +74,7 @@ func (br *bookRoutes) deleteBook(c *gin.Context) {
 }
 
 func (br *bookRoutes) updateBook(c *gin.Context) {
-	bookID , err := uuid.FromString(c.Param("id"))
+	bookID, err := uuid.FromString(c.Param("id"))
 	if err != nil {
 		errorResponse(c, http.StatusBadRequest, err.Error())
 	}
@@ -83,7 +85,7 @@ func (br *bookRoutes) updateBook(c *gin.Context) {
 	}
 
 	err = br.b.UpdateBook(c.Request.Context(), entity.Book{
-		ID: bookID,
+		ID:     bookID,
 		Tittle: req.Tittle,
 		Author: req.Author,
 	})
