@@ -52,7 +52,6 @@ func (br *bookRoutes) getBookById(c *gin.Context) {
 		return
 	}
 	c.JSON(http.StatusOK, book)
-
 }
 
 type bookRequest struct {
@@ -100,19 +99,16 @@ func (br *bookRoutes) updateBook(c *gin.Context) {
 		errorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-
 	req := new(bookRequest)
 	if err := c.ShouldBindJSON(req); err != nil {
 		errorResponse(c, http.StatusBadRequest, err.Error())
 		return
 	}
-
 	err = br.b.UpdateBook(c.Request.Context(), entity.Book{
 		ID:     bookID,
 		Tittle: req.Tittle,
 		Author: req.Author,
 	})
-
 	if err != nil {
 		errorResponse(c, http.StatusNotFound, err.Error())
 		return
