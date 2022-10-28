@@ -24,6 +24,15 @@ func newBookRoutes(handler *gin.RouterGroup, bk usecase.Book) {
 	handler.PUT("/book/:id", br.updateBook)
 }
 
+// @Summary GetAllBooks
+// @Tags book
+// @Description Get all books
+// @ID get-all-books
+// @Accept json
+// @Produce json
+// @Success 200 {object} []entity.Book
+// @Failure 500 {object} errResponse
+// @Router /api/v1/book [get]
 func (br *bookRoutes) getBooks(c *gin.Context) {
 	listBooks, err := br.b.GetBooks(c.Request.Context())
 	if err != nil {
@@ -39,7 +48,17 @@ func (br *bookRoutes) getBooks(c *gin.Context) {
 	c.JSON(http.StatusOK, req)
 }
 
-//ok
+// @Summary GetBookById
+// @Tags book
+// @Description Get book by id
+// @ID get-book-by-id
+// @Accept json
+// @Produce json
+// @Param id path string true "Enter id book"
+// @Success 200 {object} entity.Book
+// @Failure 400 {object} errResponse
+// @Failure 404 {object} errResponse
+// @Router /api/v1/book/{id} [get]
 func (br *bookRoutes) getBookById(c *gin.Context) {
 	bookID, err := uuid.FromString(c.Param("id"))
 	if err != nil {
@@ -59,7 +78,17 @@ type bookRequest struct {
 	Author string `json:"author"`
 }
 
-//ok
+// @Summary CreateBook
+// @Tags book
+// @Description Create new book
+// @ID create-book
+// @Accept json
+// @Produce json
+// @Param input body bookRequest true "Enter tittle and author of new book"
+// @Success 201 {object} nil
+// @Failure 400 {object} errResponse
+// @Failure 500 {object} errResponse
+// @Router /api/v1/book [post]
 func (br *bookRoutes) createBook(c *gin.Context) {
 	req := new(bookRequest)
 	if err := c.ShouldBindJSON(req); err != nil {
@@ -78,7 +107,17 @@ func (br *bookRoutes) createBook(c *gin.Context) {
 	c.JSON(http.StatusCreated, nil)
 }
 
-// ok
+// @Summary DeleteBook
+// @Tags book
+// @Description Delete book by id
+// @ID delete-book
+// @Accept json
+// @Produce json
+// @Param id path string true "Enter id book"
+// @Success 204 {object} nil
+// @Failure 400 {object} errResponse
+// @Failure 404 {object} errResponse
+// @Router /api/v1/book/{id} [delete]
 func (br *bookRoutes) deleteBook(c *gin.Context) {
 	bookID, err := uuid.FromString(c.Param("id"))
 	if err != nil {
@@ -93,6 +132,18 @@ func (br *bookRoutes) deleteBook(c *gin.Context) {
 	c.JSON(http.StatusNoContent, nil)
 }
 
+// @Summary UpdateBook
+// @Tags book
+// @Description Update book by id
+// @ID update-book
+// @Accept json
+// @Produce json
+// @Param id path string true "Enter id book"
+// @Param input body bookRequest true "Enter tittle and author of new book"
+// @Success 204 {object} nil
+// @Failure 400 {object} errResponse
+// @Failure 404 {object} errResponse
+// @Router /api/v1/book/{id} [put]
 func (br *bookRoutes) updateBook(c *gin.Context) {
 	bookID, err := uuid.FromString(c.Param("id"))
 	if err != nil {

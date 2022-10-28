@@ -6,6 +6,12 @@ import (
 	"pet-project-1/internal/app"
 )
 
+// @tittle Simple Book CRUDL
+// @version 1.0
+// @description API Server for Book Application
+
+// @host localhost:9000
+// @BasePath /
 func main() {
 	cfg, err := config.NewConfig()
 	if err != nil {
