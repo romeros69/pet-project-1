@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"fmt"
 	"github.com/gofrs/uuid"
 	"pet-project-1/internal/entity"
 )
@@ -28,8 +29,12 @@ func (b *BookUseCase) CreateBook(ctx context.Context, book entity.Book) (uuid.UU
 	return b.repo.CreateBook(ctx, book)
 }
 
-func (b *BookUseCase) DeleteBook(ctx context.Context, ID string) error {
-	return b.repo.DeleteBook(ctx, ID)
+func (b *BookUseCase) DeleteBook(ctx context.Context, id uuid.UUID) error {
+	_, err := b.repo.GetBookById(ctx, id)
+	if err != nil {
+		return fmt.Errorf("there is no book with this id")
+	}
+	return b.repo.DeleteBook(ctx, id)
 }
 
 func (b *BookUseCase) UpdateBook(ctx context.Context, book entity.Book) error {

@@ -82,14 +82,14 @@ func (br *bookRoutes) createBook(c *gin.Context) {
 }
 
 func (br *bookRoutes) deleteBook(c *gin.Context) {
-	id := c.Param("id")
-	if id == "" {
+	bookID, err := uuid.FromString(c.Param("id"))
+	if err != nil {
 		errorResponse(c, http.StatusBadRequest, "Отсутствует параметр id")
 		return
 	}
-	err := br.b.DeleteBook(c.Request.Context(), id)
+	err = br.b.DeleteBook(c.Request.Context(), bookID)
 	if err != nil {
-		errorResponse(c, http.StatusInternalServerError, err.Error())
+		errorResponse(c, http.StatusNotFound, err.Error())
 		return
 	}
 	c.JSON(http.StatusNoContent, nil)

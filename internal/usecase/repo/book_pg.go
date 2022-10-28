@@ -81,9 +81,9 @@ func (b *BookRepo) CreateBook(ctx context.Context, book entity.Book) (uuid.UUID,
 	return id, nil
 }
 
-func (b *BookRepo) DeleteBook(ctx context.Context, ID string) error {
+func (b *BookRepo) DeleteBook(ctx context.Context, id uuid.UUID) error {
 	query := `DELETE FROM book WHERE id = $1`
-	rows, err := b.pg.Pool.Query(ctx, query, ID)
+	rows, err := b.pg.Pool.Query(ctx, query, id)
 	if err != nil {
 		return fmt.Errorf("cannot execute query: %w", err)
 	}
