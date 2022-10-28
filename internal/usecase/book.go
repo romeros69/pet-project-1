@@ -38,5 +38,9 @@ func (b *BookUseCase) DeleteBook(ctx context.Context, id uuid.UUID) error {
 }
 
 func (b *BookUseCase) UpdateBook(ctx context.Context, book entity.Book) error {
+	_, err := b.repo.GetBookById(ctx, book.ID)
+	if err != nil {
+		return fmt.Errorf("there is no book with this id")
+	}
 	return b.repo.UpdateBook(ctx, book)
 }

@@ -22,10 +22,8 @@ func newBookRoutes(handler *gin.RouterGroup, bk usecase.Book) {
 	handler.POST("/book", br.createBook)
 	handler.DELETE("/book/:id", br.deleteBook)
 	handler.PUT("/book/:id", br.updateBook)
-
 }
 
-// ok
 func (br *bookRoutes) getBooks(c *gin.Context) {
 	listBooks, err := br.b.GetBooks(c.Request.Context())
 	if err != nil {
@@ -81,6 +79,7 @@ func (br *bookRoutes) createBook(c *gin.Context) {
 	c.JSON(http.StatusCreated, nil)
 }
 
+// ok
 func (br *bookRoutes) deleteBook(c *gin.Context) {
 	bookID, err := uuid.FromString(c.Param("id"))
 	if err != nil {
@@ -115,7 +114,7 @@ func (br *bookRoutes) updateBook(c *gin.Context) {
 	})
 
 	if err != nil {
-		errorResponse(c, http.StatusInternalServerError, err.Error())
+		errorResponse(c, http.StatusNotFound, err.Error())
 		return
 	}
 	c.JSON(http.StatusNoContent, nil)
