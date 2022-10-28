@@ -42,6 +42,28 @@ func (b *BookRepo) GetBooks(ctx context.Context) ([]entity.Book, error) {
 	return books, nil
 }
 
+func (b *BookRepo) GetBookById(ctx context.Context, id uuid.UUID) (entity.Book, error) {
+	query := "SELECT * FROM book WHERE id = $1"
+	rows, err := b.pg.Pool.Query(ctx, query, id)
+	if err != nil {
+		return entity.Book{}, fmt.Errorf("cannot execute query: %w", err)
+	}
+	defer rows.Close()
+	if !rows.Next() {
+		return entity.Book{}, fmt.Errorf("there is no book with this id: %s", id.String())
+	}
+	var book entity.Book
+	err = rows.Scan(
+		&book.ID,
+		&book.Tittle,
+		&book.Author,
+	)
+	if err != nil {
+		return entity.Book{}, fmt.Errorf("error parsing book: %w", err)
+	}
+	return book, nil
+}
+
 func (b *BookRepo) CreateBook(ctx context.Context, book entity.Book) (uuid.UUID, error) {
 	query := "INSERT INTO book (tittle, author) VALUES ($1, $2) RETURNING id"
 	rows, err := b.pg.Pool.Query(ctx, query, book.Tittle, book.Author)

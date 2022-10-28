@@ -20,6 +20,10 @@ func (b *BookUseCase) GetBooks(ctx context.Context) ([]entity.Book, error) {
 	return b.repo.GetBooks(ctx)
 }
 
+func (b *BookUseCase) GetBookById(ctx context.Context, id uuid.UUID) (entity.Book, error) {
+	return b.repo.GetBookById(ctx, id)
+}
+
 func (b *BookUseCase) CreateBook(ctx context.Context, book entity.Book) (uuid.UUID, error) {
 	return b.repo.CreateBook(ctx, book)
 }

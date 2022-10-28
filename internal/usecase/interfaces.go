@@ -8,6 +8,7 @@ import (
 
 type Book interface {
 	GetBooks(context.Context) ([]entity.Book, error)
+	GetBookById(context.Context, uuid.UUID) (entity.Book, error)
 	CreateBook(context.Context, entity.Book) (uuid.UUID, error)
 	DeleteBook(context.Context, string) error
 	UpdateBook(context.Context, entity.Book) error
@@ -15,6 +16,7 @@ type Book interface {
 
 type BookRepo interface {
 	GetBooks(context.Context) ([]entity.Book, error)
+	GetBookById(context.Context, uuid.UUID) (entity.Book, error)
 	CreateBook(context.Context, entity.Book) (uuid.UUID, error)
 	DeleteBook(context.Context, string) error
 	UpdateBook(context.Context, entity.Book) error
