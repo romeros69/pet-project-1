@@ -8,7 +8,6 @@ import (
 
 func NewRouter(handler *gin.Engine, bk usecase.Book) {
 	h := handler.Group("/api/v1")
-
 	{
 		newBookRoutes(h, bk)
 	}

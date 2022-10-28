@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"context"
+	"github.com/gofrs/uuid"
 	"pet-project-1/internal/entity"
 )
 
@@ -19,7 +20,7 @@ func (b *BookUseCase) GetBooks(ctx context.Context) ([]entity.Book, error) {
 	return b.repo.GetBooks(ctx)
 }
 
-func (b *BookUseCase) CreateBook(ctx context.Context, book entity.Book) error {
+func (b *BookUseCase) CreateBook(ctx context.Context, book entity.Book) (uuid.UUID, error) {
 	return b.repo.CreateBook(ctx, book)
 }
 

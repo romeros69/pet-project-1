@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"fmt"
 	"net/http"
 	"pet-project-1/internal/entity"
 	"pet-project-1/internal/usecase"
@@ -23,6 +24,7 @@ func newBookRoutes(handler *gin.RouterGroup, bk usecase.Book) {
 
 }
 
+// ok
 func (br *bookRoutes) getBooks(c *gin.Context) {
 	listBooks, err := br.b.GetBooks(c.Request.Context())
 	if err != nil {
@@ -42,12 +44,13 @@ type bookRequest struct {
 	Author string `json:"author"`
 }
 
+//ok
 func (br *bookRoutes) createBook(c *gin.Context) {
 	req := new(bookRequest)
 	if err := c.ShouldBindJSON(req); err != nil {
 		errorResponse(c, http.StatusBadRequest, err.Error())
 	}
-	err := br.b.CreateBook(c.Request.Context(), entity.Book{
+	id, err := br.b.CreateBook(c.Request.Context(), entity.Book{
 		Tittle: req.Tittle,
 		Author: req.Author,
 	})
@@ -55,8 +58,7 @@ func (br *bookRoutes) createBook(c *gin.Context) {
 		errorResponse(c, http.StatusInternalServerError, err.Error())
 		return
 	}
-	// TODO Нужно получать UUID вновь созданного обекта и возвращать его
-	c.Header("k1", "fd")
+	c.Header("Location", fmt.Sprintf("/api/v1/book/%s", id.String()))
 	c.JSON(http.StatusCreated, nil)
 }
 
